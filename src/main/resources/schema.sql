@@ -30,3 +30,6 @@ CREATE TABLE IF NOT EXISTS customerqna(
 	is_secure bit DEFAULT 0,
 	is_deleted bit DEFAULT 0
 );
+
+--INSERT INTO `my_db`.`customerqna` (`title`, `content`, `username`, `password`) 
+--VALUES ('타이틀', '컨텐트', '유저네임', '패스워드');

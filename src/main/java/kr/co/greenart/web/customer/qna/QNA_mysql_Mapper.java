@@ -4,17 +4,17 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 @Mapper
-public interface QNA_Mapper {
+@Qualifier("mysqlMapper")
+public interface QNA_mysql_Mapper {
 //	CREATE TABLE IF NOT EXISTS customerqna(
 //			article_id INT PRIMARY KEY AUTO_INCREMENT,
 //			title VARCHAR(200) NOT NULL,
@@ -35,15 +35,13 @@ public interface QNA_Mapper {
 	
 //	-- 1. 글 작성
 	@Insert({
-		"INSERT INTO customerqna (title, content, username, password)"
-		, "VALUES (#{title}, #{content}, #{username}, #{password})"
+		"INSERT INTO customerqna (title, content, username, password, is_secure)"
+		, "VALUES (#{title}, #{content}, #{username}, #{password}, #{is_secure})"
 	})
-	@Options(useGeneratedKeys = true, keyProperty = "article_id")
+	@SelectKey(statement = "SELECT LAST_INSERT_ID()", keyColumn = "article_id", keyProperty = "article_id"
+	, resultType = Integer.class, before = false)
 	int save(QNA qna);
 	
-	// mysql용 구문
-//	@SelectKey(statement = "SELECT LAST_INSERT_ID()", keyColumn = "article_id", keyProperty = "articleId"
-//			, resultType = Integer.class, before = false)
 	
 //	-- 2. 전체 게시글 목록 조회
 	@Select("SELECT article_id, title, content, username, views, is_secure FROM customerqna"
@@ -70,9 +68,9 @@ public interface QNA_Mapper {
 	
 	// TODO 4 5 6 7 SQL 명령문 구현하시오
 //	-- 4. 게시글 조회(id로 검색, title, content, username)
-	@Select("SELECT title, content, username FROM customerqna"
+	@Select("SELECT title, content, username, views, is_secure FROM customerqna"
 			+ " WHERE article_id = #{article_id}")
-	int findByPk(int article_id);
+	QNA findByPk(Integer article_id);
 	
 //	-- 5. 게시글의 비밀 여부 조회 (is_secure)
 	@Select("SELECT is_secure FROM customerqna"
