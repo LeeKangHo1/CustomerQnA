@@ -68,22 +68,33 @@ public interface QNA_Mapper {
 	@ResultMap("qnaList")
 	List<QNA> findBySecureIsFalse(int pageSize, int limit);
 	
-	// TODO 4 5 6 7 SQL 명령문 구현하시오
+//	pk로 모든 컬럼 조회
+	@Select("SELECT * FROM customerqna WHERE article_id = #{article_id}")
+	@Results(
+			id = "qnaMapping"
+			, value = {
+					@Result(column = "article_id", property = "article_id", id = true)
+					, @Result(column = "title", property = "title")
+					, @Result(column = "content", property = "content")
+					, @Result(column = "username", property = "username")
+					, @Result(column = "password", property = "password")
+					, @Result(column = "views", property = "views")
+					, @Result(column = "created_at", property = "created_at")
+					, @Result(column = "updated_at", property = "updated_at")
+					, @Result(column = "is_secure", property = "is_secure")
+					, @Result(column = "is_deleted", property = "is_deleted")
+			}
+	)
+	QNA FindById(Integer article_id);
+	
+	// 조회수 증가
+	@Update("UPDATE customerqna SET views = views + 1 WHERE article_id = #{article_id}")
+	int updateCount(Integer article_id);
+	
 //	-- 4. 게시글 조회(id로 검색, title, content, username)
-	@Select("SELECT title, content, username FROM customerqna"
-			+ " WHERE article_id = #{article_id}")
-	int findByPk(int article_id);
 	
-//	-- 5. 게시글의 비밀 여부 조회 (is_secure)
-	@Select("SELECT is_secure FROM customerqna"
-			+ " WHERE article_id = #{article_id}")
-	int findSecureByPk(int article_id);
-	
-//	-- 6. views count 수정(1 증가)
-	@Update("UPDATE customerqna SET views = (views + 1) WHERE article_id = #{article_id}")
-	int updateCount(int article_id);
+//	-- 5. 게시글의 비밀 여부 조회 (is_secure) -> FindById가 모든 컬럼 조회가 필요 없어짐
 	
 //	-- 7. 글 논리 삭제(pk 및 password 일치) : is_delete => 1로 수정
-	@Update("UPDATE customerqna SET is_deleted = '1' WHERE article_id = #{article_id}")
-	int updateDelete();
+	
 }

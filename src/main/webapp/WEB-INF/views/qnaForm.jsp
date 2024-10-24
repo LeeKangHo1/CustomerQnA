@@ -12,7 +12,7 @@
 		<label>내용<input type="text" name="content"></label>
 		<label>닉네임<input type="text" name="username"></label>
 		<label>비밀번호<input type="password" name="password"></label>
-		<label>비밀글여부<input type="number" name="is_secure" min="0" max="1"></label>
+		<label>비밀글여부<input type="checkbox" name="is_secure"></label>
 		<input type="submit">
 	</form>
 </body>

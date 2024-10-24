@@ -4,12 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>비밀번호 확인</title>
+<title>오류 발생</title>
 </head>
 <body>
-	<form method="post">
-		<label>비밀번호 확인<input type="password" name="password"></label>
-		<input type="submit">
-	</form>
+	<p>게시글을 찾을 수 없습니다.</p>
+	<p>주소를 다시 확인해주세요.</p>
+	<a href="/qna">게시글 목록으로 돌아가기</a>
 </body>
 </html>

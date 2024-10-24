@@ -77,11 +77,31 @@ public interface QNA_mysql_Mapper {
 			+ " WHERE article_id = #{article_id}")
 	int findSecureByPk(int article_id);
 	
-//	-- 6. views count 수정(1 증가)
-	@Update("UPDATE customerqna SET views = (views + 1) WHERE article_id = #{article_id}")
-	int updateCount(int article_id);
-	
 //	-- 7. 글 논리 삭제(pk 및 password 일치) : is_delete => 1로 수정
 	@Update("UPDATE customerqna SET is_deleted = '1' WHERE article_id = #{article_id}")
 	int updateDelete();
+	
+	
+//	pk로 모든 컬럼 조회
+	@Select("SELECT * FROM customerqna WHERE article_id = #{article_id}")
+	@Results(
+			id = "qnaMapping"
+			, value = {
+					@Result(column = "article_id", property = "article_id", id = true)
+					, @Result(column = "title", property = "title")
+					, @Result(column = "content", property = "content")
+					, @Result(column = "username", property = "username")
+					, @Result(column = "password", property = "password")
+					, @Result(column = "views", property = "views")
+					, @Result(column = "created_at", property = "created_at")
+					, @Result(column = "updated_at", property = "updated_at")
+					, @Result(column = "is_secure", property = "is_secure")
+					, @Result(column = "is_deleted", property = "is_deleted")
+			}
+	)
+	QNA FindById(Integer article_id);
+	
+	// 조회수 증가
+	@Update("UPDATE customerqna SET views = views + 1 WHERE article_id = #{article_id}")
+	int updateCount(Integer article_id);
 }

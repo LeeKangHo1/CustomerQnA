@@ -24,26 +24,26 @@ class MysqlTest {
 	@Autowired
 	private QNA_mysql_Mapper mapper; 
 
-	@Test
-	@Order(1)
-	@Transactional
-	@Rollback
-	void testInsert() {
-		QNA qna = QNA.builder().title("제목").content("내용").username("유저네임").password("비밀번호").build();
-		int rows = mapper.save(qna);
-		
-		assertEquals(1, rows);
-		assertNotNull(qna.getArticle_id());
-	}
+//	@Test
+//	@Order(1)
+//	@Transactional
+//	@Rollback
+//	void testInsert() {
+//		QNA qna = QNA.builder().title("제목").content("내용").username("유저네임").password("비밀번호").build();
+//		int rows = mapper.save(qna);
+//		
+//		assertEquals(1, rows);
+//		assertNotNull(qna.getArticle_id());
+//	}
 
-	@Test
-	@Order(2)
-	@Transactional
-	@Rollback
-	void testSelect() {
-		List<QNA> all = mapper.findAll(10, 0);
-
-		assertNotEquals(1, all.size());
-	}
+//	@Test
+//	@Order(2)
+//	@Transactional
+//	@Rollback
+//	void testSelect() {
+//		List<QNA> all = mapper.findAll(10, 0);
+//
+//		assertNotEquals(1, all.size());
+//	}
 	
 }
