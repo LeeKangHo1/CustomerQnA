@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.co.greenart.web.util.QNA_IsSecure;
 import kr.co.greenart.web.util.QNA_NotFoundException;
 
 @Service
@@ -26,9 +25,9 @@ public class QNA_ServiceImpl implements QNA_Service {
 			throw new QNA_NotFoundException(article_id);
 		}
 		
-		if (qna.getIs_secure()) {
-			throw new QNA_IsSecure(article_id);
-		}
+//		if (qna.getIs_secure()) {
+//			throw new QNA_IsSecure(article_id);
+//		}
 		
 		int rows = mapper.updateCount(article_id);
 		if (rows == 1) {
@@ -48,6 +47,11 @@ public class QNA_ServiceImpl implements QNA_Service {
 	public QNA writeQna(QNA qna) {
 		int result = mapper.save(qna);
 		return qna;
+	}
+
+	@Override
+	public String findPassById(Integer article_id) {
+		return mapper.selectPassById(article_id);
 	}
 
 }

@@ -5,13 +5,14 @@ import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.jdbc.SQL;
+
+import kr.co.greenart.web.util.MyOrder;
 
 @Mapper
 public interface QNA_Mapper {
@@ -90,6 +91,23 @@ public interface QNA_Mapper {
 	// 조회수 증가
 	@Update("UPDATE customerqna SET views = views + 1 WHERE article_id = #{article_id}")
 	int updateCount(Integer article_id);
+	
+	// 정렬 기능을 위한 동적 파라미터를 가진 sql 쿼리문
+	class SQLProvider {
+		public String selectOrderBy(MyOrder order) {
+			return new SQL()
+					.SELECT("columns")
+					.FROM("tablename")
+//					.ORDER_BY(order.get정렬방식())
+					.LIMIT("리밋")
+					.OFFSET("오프셋")
+					.toString();
+		}
+	}
+	
+	
+	
+	
 	
 //	-- 4. 게시글 조회(id로 검색, title, content, username)
 	

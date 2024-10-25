@@ -31,6 +31,14 @@
 	</properties>
 	<dependencies>
 	
+	<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-commons -->
+	<dependency>
+	    <groupId>org.springframework.data</groupId>
+	    <artifactId>spring-data-commons</artifactId>
+	    <version>3.3.5</version>
+	</dependency>
+
+	
 	<!-- https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-jasper -->
 	<dependency>
     	<groupId>org.apache.tomcat.embed</groupId>
@@ -44,7 +52,7 @@
 	<dependency>
 	    <groupId>org.glassfish.web</groupId>
 	    <artifactId>jakarta.servlet.jsp.jstl</artifactId>
-	<!--    <version>3.0.0</version>-->
+<!--	    <version>3.0.0</version>-->
 	</dependency>
 	
 	<dependency>

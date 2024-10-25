@@ -9,8 +9,15 @@ import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.jdbc.SQL;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
+
+import kr.co.greenart.web.customer.qna.QNA_Mapper.SQLProvider;
 
 @Mapper
 @Qualifier("mysqlMapper")
@@ -58,6 +65,31 @@ public interface QNA_mysql_Mapper {
 			})
 	List<QNA> findAll(int pageSize, int limit);
 	
+	// 조회 수 정렬
+	@SelectProvider(type = SQLProvider.class, method = "selectOrderBy")
+	@ResultMap("qnaMapping")
+	List<QNA> selectAllOrderBy(Pageable page);
+	
+	// 정렬 기능을 위한 동적 파라미터를 가진 sql 쿼리문
+	class QNA_SQLProvider {
+		public String selectOrderBy(Pageable page) {
+			return new SQL() {{
+				SELECT("*");
+				FROM("customersqna");
+				
+				Sort sort = page.getSort();
+				if (!sort.isEmpty()) {
+					for (Order s : sort.toList()) {
+						ORDER_BY(s.getProperty() + " "
+								+ (s.isDescending() ? "DESC" : "ASC"));
+					}
+				}
+				LIMIT(page.getPageSize());
+				OFFSET(page.getOffset());
+			}}.toString();
+		}
+	}
+	
 //	-- 3. 게시글 조회 시, is_secure 값이 false인 행만 조회
 	@Select("SELECT article_id, title, content, username, views, is_secure FROM customerqna"
 			+ " WHERE is_secure = 0"
@@ -104,4 +136,8 @@ public interface QNA_mysql_Mapper {
 	// 조회수 증가
 	@Update("UPDATE customerqna SET views = views + 1 WHERE article_id = #{article_id}")
 	int updateCount(Integer article_id);
+	
+	// 비밀번호 조회
+	@Select("SELECT password FROM customerqna WHERE article_id = #{article_id}")
+	String selectPassById(Integer article_id);
 }

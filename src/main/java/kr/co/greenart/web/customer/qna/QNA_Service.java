@@ -4,13 +4,16 @@ import java.util.List;
 
 // 요구사항 도출 / 검증
 public interface QNA_Service {
-	QNA findById(Integer articleId);
+	QNA findById(Integer article_id);
 	
 	// 1. 게시글 작성
 	QNA writeQna(QNA qna);
 	
 	// 2. 게시글 조회
 	List<QNA> findAll();
+	
+	// 비밀번호 조회
+	String findPassById(Integer article_id);
 
 /*
 1. 게시글 작성
@@ -22,8 +25,8 @@ public interface QNA_Service {
 
 모든 사용자가 게시글 열람 가능 (비밀글은 비밀번호 일치시)
 - [v] 조회수 자동 증가
-최신순/조회수순/댓글수순 정렬 가능
-페이지당 20개 게시글 표시
+최신순/조회수순 정렬 가능
+페이지당 20개 게시글 표시 (나는 임의로 10개)
 
 3. 게시글 수정/삭제
 
