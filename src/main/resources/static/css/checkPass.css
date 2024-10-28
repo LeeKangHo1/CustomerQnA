@@ -1,0 +1,51 @@
+@charset "UTF-8";
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+.password-check, .password-confirm {
+    width: 50%;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.password-check .message, .password-confirm label {
+    font-size: 18px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.password-check .error, .password-confirm .error {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.password-check input[type="password"], .password-confirm input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.password-check button, .password-confirm input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.password-check button:hover, .password-confirm input[type="submit"]:hover {
+    background-color: #0056b3;
+}

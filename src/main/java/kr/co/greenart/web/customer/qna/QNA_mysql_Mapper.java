@@ -1,9 +1,11 @@
 package kr.co.greenart.web.customer.qna;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
@@ -15,6 +17,7 @@ import org.apache.ibatis.jdbc.SQL;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Mapper
 @Qualifier("mysqlMapper")
@@ -88,4 +91,37 @@ public interface QNA_mysql_Mapper {
 	@Update("UPDATE customerqna SET title = #{title}, content = #{content}, username = #{username}, password = #{password}"
 			+ ", is_secure = #{is_secure}, updated_at = CURRENT_TIMESTAMP WHERE article_id = #{article_id};")
 	int updateEdit(QNA qna);
+
+	// 제목이나 내용으로 검색
+    @SelectProvider(type = QnaSearchProvider.class, method = "searchByTitleOrContent")
+    @ResultMap("qnaMapping")
+    List<QNA> searchByTitleOrContent(@Param("searchType") String searchType, @Param("keyword") String keyword
+    		, Pageable sortedPageable);
+
+    class QnaSearchProvider {
+        public String searchByTitleOrContent(@Param("searchType") String searchType, @Param("keyword") String keyword
+        		, Pageable sortedPageable) {
+            
+            return new SQL() {{
+                SELECT("*");
+                FROM("customerqna");
+                WHERE("is_deleted = false");
+                if ("searchTitle".equals(searchType)) {
+                    WHERE("title LIKE CONCAT('%', #{keyword}, '%')");
+                } else if ("searchContent".equals(searchType)) {
+                    WHERE("content LIKE CONCAT('%', #{keyword}, '%')");
+                }
+                if (sortedPageable.getSort().isSorted()) {
+	                for (Sort.Order order : sortedPageable.getSort()) {
+	                    ORDER_BY(order.getProperty() + " " + order.getDirection().name());
+	                }
+	            } else {
+	                ORDER_BY("article_id DESC");
+	            }
+	            LIMIT(sortedPageable.getPageSize());
+	            OFFSET((int) sortedPageable.getOffset());
+            }}.toString();
+        }
+    }
 }
+

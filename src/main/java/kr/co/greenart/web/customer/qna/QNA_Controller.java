@@ -1,5 +1,6 @@
 package kr.co.greenart.web.customer.qna;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Controller
 @Slf4j
@@ -22,25 +25,50 @@ public class QNA_Controller {
 	@Autowired
 	private QNA_Service service;
 	
-	@GetMapping({"/qna", "/qna/"})
-	public String qna(
-	        @PageableDefault(size = 20, page = 0, sort = "article_id"
-	        	, direction = Sort.Direction.DESC) Pageable pageable,
-	        @RequestParam(required = false, defaultValue = "article_id") String sortBy,
-	        Model model) {
+	@GetMapping("/qna")
+	public String searchQnaList(
+			@PageableDefault(size = 20, page = 0, sort = "article_id", direction = Sort.Direction.DESC) Pageable pageable,
+			@RequestParam(required = false, defaultValue = "article_id") String sortBy,
+			@RequestParam(defaultValue = "searchTitle") String searchType,
+			@RequestParam(defaultValue = "") String keyword, Model model) {
 
-	    // 선택한 정렬 방식 적용
-	    Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
-	            Sort.by(Sort.Order.desc(sortBy)));
+		// 선택한 정렬 방식 적용
+		Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+				Sort.by(Sort.Order.desc(sortBy)));
 
-	    List<QNA> qnaList = service.findAll(sortedPageable);
-	    model.addAttribute("qnaList", qnaList);
-	    model.addAttribute("currentPage", pageable.getPageNumber());
-	    model.addAttribute("currentSort", sortBy); // 현재 정렬 방식을 넘김
-	    return "qna";
+		List<QNA> searchResults = service.searchByTitleOrContent(searchType, keyword, sortedPageable);
+
+		model.addAttribute("searchType", searchType);
+		model.addAttribute("keyword", keyword);
+
+		model.addAttribute("qnaList", searchResults);
+		model.addAttribute("currentPage", pageable.getPageNumber());
+		model.addAttribute("currentSort", sortBy);
+		return "qna2";
 	}
-
-
+	
+//	@PostMapping("/qna")
+//	public String searchQna(
+//			@PageableDefault(size = 20, page = 0, sort = "article_id", direction = Sort.Direction.DESC) Pageable pageable,
+//			@RequestParam(required = false, defaultValue = "article_id") String sortBy,
+//			@RequestParam(defaultValue = "searchTitle") String searchType,
+//			@RequestParam(defaultValue = "") String keyword, Model model) {
+//
+//		// 선택한 정렬 방식 적용
+//		Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+//				Sort.by(Sort.Order.desc(sortBy)));
+//
+//		List<QNA> searchResults = service.searchByTitleOrContent(searchType, keyword, sortedPageable);
+//
+//		model.addAttribute("searchType", searchType);
+//		model.addAttribute("keyword", keyword);
+//
+//		model.addAttribute("qnaList", searchResults);
+//		model.addAttribute("currentPage", pageable.getPageNumber());
+//		model.addAttribute("currentSort", sortBy);
+//		return "qna2";
+//	}
+	
 	@GetMapping("/qna/{article_id}")
 	public String readArticle(@PathVariable Integer article_id, Model model) {
 		QNA qna = service.findById(article_id);
@@ -70,7 +98,6 @@ public class QNA_Controller {
             return "checkPassword"; 
         }
     }
-
 	
 	@GetMapping("/qna/form")
 	public String toForm() {

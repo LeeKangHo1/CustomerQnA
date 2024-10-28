@@ -31,5 +31,5 @@ CREATE TABLE IF NOT EXISTS customerqna(
 	is_deleted bit DEFAULT 0
 );
 
---INSERT INTO customerqna (title, content, username, password, is_secure)
--- VALUES ('title1', 'content1', 'username1', 'password1', 1);
+INSERT INTO customerqna (title, content, username, password, is_secure)
+ VALUES ('title1', 'content1', 'username1', 'password1', 1);

@@ -1,0 +1,81 @@
+@charset "UTF-8";
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+#qna-article {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+}
+
+#qna-article .title-block {
+    margin-bottom: 10px;
+}
+
+#qna-article .title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#qna-article .meta-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #666;
+}
+
+#qna-article .content {
+    margin-top: 20px;
+    padding: 10px;
+    background: #f9f9f9;
+    border: 1px solid #e5e5e5;
+}
+
+#qna-article .content h4 {
+    margin-top: 0;
+}
+
+#qna-article .created-at {
+    text-align: right;
+    font-size: 12px;
+    color: #999;
+}
+
+.link-buttons {
+    text-align: center;
+    margin: 20px;
+}
+
+.link-buttons button {
+    margin: 5px;
+    padding: 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.actions {
+    text-align: center;
+    margin: 20px;
+}
+
+.actions a {
+    display: inline-block;
+    margin: 5px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.actions a:hover {
+    background-color: #0056b3;
+}
+

@@ -62,5 +62,10 @@ public class QNA_ServiceImpl implements QNA_Service {
 		int result = mapper.updateEdit(qna);
 		return result;
 	}
+	
+	// 검색 메서드
+    public List<QNA> searchByTitleOrContent(String searchType, String keyword, Pageable sortedPageable) {
+        return mapper.searchByTitleOrContent(searchType, keyword, sortedPageable);
+    }
 
 }
