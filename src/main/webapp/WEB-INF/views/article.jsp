@@ -16,9 +16,18 @@
 		<p>내용</p>
 		<p>${ qna.content }
 		<footer>
-			<p>비밀글 : ${ qna.is_secure }</p>
+<%-- 			<p>비밀글 : ${ qna.is_secure }</p> --%>
 			<p>작성일 : ${ qna.created_at }</p>
 		</footer>
 	</article>
+		<div>
+			<a href="/qna/${qna.article_id}/edit">게시글 수정하기</a>
+		</div>
+		<div>
+			<a href="/qna/${qna.article_id}/delete">게시글 삭제하기</a>
+		</div>
+		<div>
+			<a href="/qna">게시글 목록으로</a>
+		</div>
 </body>
 </html>

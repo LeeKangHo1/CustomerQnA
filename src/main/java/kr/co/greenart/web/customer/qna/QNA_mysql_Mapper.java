@@ -15,31 +15,10 @@ import org.apache.ibatis.jdbc.SQL;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
-
-import kr.co.greenart.web.customer.qna.QNA_Mapper.SQLProvider;
 
 @Mapper
 @Qualifier("mysqlMapper")
 public interface QNA_mysql_Mapper {
-//	CREATE TABLE IF NOT EXISTS customerqna(
-//			article_id INT PRIMARY KEY AUTO_INCREMENT,
-//			title VARCHAR(200) NOT NULL,
-//			content TEXT NOT NULL,
-//			username VARCHAR(20) NOT NULL,
-//			password VARCHAR(64) NOT NULL,
-//			views INT DEFAULT 0,
-//			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-//			updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-//			is_secure bit DEFAULT 0,
-//			is_deleted bit DEFAULT 0
-//		);
-	
-//	-- 익명 고객센터 문의게시판 테이블을 생성하는 쿼리문을 작성해주세요 
-//	(테이블 이름 customerqna, 아래는 column 이름)
-//	article_id, title, content, username, password
-//	, views, created_at, updated_at, is_secure, is_deleted
-	
 //	-- 1. 글 작성
 	@Insert({
 		"INSERT INTO customerqna (title, content, username, password, is_secure)"
@@ -49,70 +28,30 @@ public interface QNA_mysql_Mapper {
 	, resultType = Integer.class, before = false)
 	int save(QNA qna);
 	
-	
-//	-- 2. 전체 게시글 목록 조회
-	@Select("SELECT article_id, title, content, username, views, is_secure FROM customerqna"
-			+ " ORDER BY article_id DESC"
-			+ " LIMIT #{pageSize} OFFSET #{limit}")
-	@Results(id = "qnaList"
-			, value = {
-					@Result(column = "article_id", property = "article_id")
-					, @Result(column = "title", property = "title")
-					, @Result(column = "content", property = "content")
-					, @Result(column = "username", property = "username")
-					, @Result(column = "views", property = "views")
-					, @Result(column = "is_secure", property = "is_secure")
-			})
-	List<QNA> findAll(int pageSize, int limit);
-	
-	// 조회 수 정렬
-	@SelectProvider(type = SQLProvider.class, method = "selectOrderBy")
-	@ResultMap("qnaMapping")
-	List<QNA> selectAllOrderBy(Pageable page);
-	
-	// 정렬 기능을 위한 동적 파라미터를 가진 sql 쿼리문
-	class QNA_SQLProvider {
-		public String selectOrderBy(Pageable page) {
-			return new SQL() {{
-				SELECT("*");
-				FROM("customersqna");
-				
-				Sort sort = page.getSort();
-				if (!sort.isEmpty()) {
-					for (Order s : sort.toList()) {
-						ORDER_BY(s.getProperty() + " "
-								+ (s.isDescending() ? "DESC" : "ASC"));
-					}
-				}
-				LIMIT(page.getPageSize());
-				OFFSET(page.getOffset());
-			}}.toString();
-		}
+	// 정렬을 적용해서 전체 게시글 조회
+	public class QnaSqlProvider {
+	    public String findAllWithPagination(Pageable pageable) {
+	        return new SQL() {{
+	            SELECT("*");
+	            FROM("customerqna");
+	            WHERE("is_deleted = false");
+	            if (pageable.getSort().isSorted()) {
+	                for (Sort.Order order : pageable.getSort()) {
+	                    ORDER_BY(order.getProperty() + " " + order.getDirection());
+	                }
+	            } else {
+	                ORDER_BY("article_id DESC"); // 기본 정렬
+	            }
+	            // 페이지 크기와 오프셋 설정
+	            LIMIT(pageable.getPageSize());
+	            OFFSET((int) pageable.getOffset());
+	        }}.toString();
+	    }
 	}
 	
-//	-- 3. 게시글 조회 시, is_secure 값이 false인 행만 조회
-	@Select("SELECT article_id, title, content, username, views, is_secure FROM customerqna"
-			+ " WHERE is_secure = 0"
-			+ " ORDER BY article_id DESC"
-			+ " LIMIT #{pageSize} OFFSET #{limit}")
-	@ResultMap("qnaList")
-	List<QNA> findBySecureIsFalse(int pageSize, int limit);
-	
-	// TODO 4 5 6 7 SQL 명령문 구현하시오
-//	-- 4. 게시글 조회(id로 검색, title, content, username)
-	@Select("SELECT title, content, username, views, is_secure FROM customerqna"
-			+ " WHERE article_id = #{article_id}")
-	QNA findByPk(Integer article_id);
-	
-//	-- 5. 게시글의 비밀 여부 조회 (is_secure)
-	@Select("SELECT is_secure FROM customerqna"
-			+ " WHERE article_id = #{article_id}")
-	int findSecureByPk(int article_id);
-	
-//	-- 7. 글 논리 삭제(pk 및 password 일치) : is_delete => 1로 수정
-	@Update("UPDATE customerqna SET is_deleted = '1' WHERE article_id = #{article_id}")
-	int updateDelete();
-	
+	@SelectProvider(type = QnaSqlProvider.class, method = "findAllWithPagination")
+    @ResultMap("qnaMapping")
+    List<QNA> findAllWithPagination(Pageable pageable);
 	
 //	pk로 모든 컬럼 조회
 	@Select("SELECT * FROM customerqna WHERE article_id = #{article_id}")
@@ -140,4 +79,13 @@ public interface QNA_mysql_Mapper {
 	// 비밀번호 조회
 	@Select("SELECT password FROM customerqna WHERE article_id = #{article_id}")
 	String selectPassById(Integer article_id);
+	
+//	-- 7. 글 논리 삭제(pk 및 password 일치) : is_delete => true로 수정
+	@Update("UPDATE customerqna SET is_deleted = true WHERE article_id = #{article_id}")
+	int updateDelete(Integer article_id);
+	
+	// 글 수정
+	@Update("UPDATE customerqna SET title = #{title}, content = #{content}, username = #{username}, password = #{password}"
+			+ ", is_secure = #{is_secure}, updated_at = CURRENT_TIMESTAMP WHERE article_id = #{article_id};")
+	int updateEdit(QNA qna);
 }

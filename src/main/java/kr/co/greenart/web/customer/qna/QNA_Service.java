@@ -2,6 +2,8 @@ package kr.co.greenart.web.customer.qna;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+
 // 요구사항 도출 / 검증
 public interface QNA_Service {
 	QNA findById(Integer article_id);
@@ -10,10 +12,19 @@ public interface QNA_Service {
 	QNA writeQna(QNA qna);
 	
 	// 2. 게시글 조회
-	List<QNA> findAll();
+	List<QNA> findAll(Pageable pageable);
 	
 	// 비밀번호 조회
 	String findPassById(Integer article_id);
+	
+	// 조회 수 증가
+	QNA updateViews(QNA qna);
+	
+	// 게시글 삭제
+	int deleteQna(Integer article_id);
+	
+	// 게시글 수정
+	int updateArticle(QNA qna);
 
 /*
 1. 게시글 작성
@@ -33,6 +44,8 @@ public interface QNA_Service {
 작성 시 입력한 비밀번호로 인증
 수정 이력 저장
 삭제 시 실제 삭제가 아닌 논리 삭제 처리
+
+==============완료==================
 
 4. 검색 기능
 
