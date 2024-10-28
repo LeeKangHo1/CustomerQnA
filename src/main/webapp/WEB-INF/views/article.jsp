@@ -27,17 +27,22 @@
             <p class="created-at">작성일 : ${qna.created_at}</p>
         </footer>
     </article>
-    <c:if test="${ not empty id }">
-        <div class="comments-section">
-            <span class="admin">${ admin }</span><span class="comment-content">${ content }</span>
-            <form method="post" action="/qna/${qna.article_id}/comment" class="comment-form">
-                <label>내용</label>
-                <input type="text" name="content" class="input-content" required>
-                <button type="submit">댓글 작성</button>
-            </form>
-        </div>
+    <c:if test="${ not empty qnaComment }">
+    <div class="comment-block">
+        <span class="comment-content">${qnaComment.comment}</span>
+    </div>
     </c:if>
-    <div class="link-buttons">
+	<c:if test="${ not empty id }">
+		<div class="comments-section">
+			<form method="post" action="/qna/${qna.article_id}/comment"
+				class="comment-form">
+				<label>내용</label> <input type="text" name="comment"
+					class="input-content" required>
+				<button type="submit">댓글 작성</button>
+			</form>
+		</div>
+	</c:if>
+	<div class="link-buttons">
         <button id="btn-link">게시글 링크 보기</button>
         <dialog id="link">
             <span>링크: </span><span id="linkUrl">http://localhost:8080/qna/${qna.article_id}</span>

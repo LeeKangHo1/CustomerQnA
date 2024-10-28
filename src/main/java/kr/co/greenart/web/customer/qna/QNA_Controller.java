@@ -27,6 +27,9 @@ public class QNA_Controller {
 	@Autowired
 	private QNA_Service service;
 	
+	@Autowired
+	private CommentMapper commentMapper;
+	
 	@GetMapping("/qna")
 	public String searchQnaList(
 			@PageableDefault(size = 10, page = 0, sort = "article_id", direction = Sort.Direction.DESC) Pageable pageable,
@@ -52,12 +55,14 @@ public class QNA_Controller {
 	@GetMapping("/qna/{article_id}")
 	public String readArticle(@PathVariable Integer article_id, Model model) {
 		QNA qna = service.findById(article_id);
+		Comment comment = commentMapper.findByArticleId(article_id);
 		
 		if (qna.getIs_secure()) {
 			return "checkPassword";
 		} else {
 			service.updateViews(qna);
 			model.addAttribute("qna", qna);
+			model.addAttribute("qnaComment", comment);
 			return "article";
 		}
 	}
@@ -67,6 +72,8 @@ public class QNA_Controller {
                                  @RequestParam String password, 
                                  Model model) {
 		QNA qna = service.findById(article_id);
+		Comment comment = commentMapper.findByArticleId(article_id);
+		model.addAttribute("qnaComment", comment);
        	String originalPassword = qna.getPassword();   
        	
         if (originalPassword.equals(password)) {
@@ -111,6 +118,8 @@ public class QNA_Controller {
 	public String deleteQna(@PathVariable Integer article_id
 			, Model model, @RequestParam String password) {
 		QNA qna = service.findById(article_id);
+		Comment comment = commentMapper.findByArticleId(article_id);
+		model.addAttribute("qnaComment", comment);
        	String originalPassword = qna.getPassword();  
        	
         if (originalPassword.equals(password)) {
@@ -134,7 +143,9 @@ public class QNA_Controller {
 	@PostMapping("/qna/{article_id}/edit")
 	public String editQna(@PathVariable Integer article_id, Model model, @RequestParam String password) {
 		QNA qna = service.findById(article_id);
-       	String originalPassword = qna.getPassword();   
+       	String originalPassword = qna.getPassword();  
+       	Comment comment = commentMapper.findByArticleId(article_id);
+		model.addAttribute("qnaComment", comment);
        	
         if (originalPassword.equals(password)) {
         	model.addAttribute("qna", qna);
@@ -162,6 +173,8 @@ public class QNA_Controller {
 		
 		int result = service.updateArticle(qna);
 		QNA afterQna = service.findById(article_id);
+		Comment comment = commentMapper.findByArticleId(article_id);
+		model.addAttribute("qnaComment", comment);
 		model.addAttribute("qna", afterQna);
 		
 		return "article";
@@ -194,10 +207,12 @@ public class QNA_Controller {
 	// TODO 댓글 달기
 	@PostMapping("/qna/{article_id}/comment")
 	public String addComment(@PathVariable("article_id") Integer articleId,
-	                         @RequestParam String content,
-	                         RedirectAttributes redirectAttributes) {
-	    redirectAttributes.addFlashAttribute("admin", "관리자");
-	    redirectAttributes.addFlashAttribute("content", content);
+	                         @RequestParam String comment) {
+		Comment insertComment = Comment.builder()
+				.article_id(articleId)
+				.comment(comment).build();
+		
+	    int result = commentMapper.insertComment(insertComment);
 	    return "redirect:/qna/" + articleId;
 	}
 

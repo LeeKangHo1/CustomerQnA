@@ -56,9 +56,20 @@ body {
     border: 1px solid #ddd;
 }
 
-.admin, .comment-content {
-    display: block;
+.comment-box {
+    border: 1px solid #ccc;
+    padding: 10px;
     margin-bottom: 10px;
+    background: #fff;
+    border-radius: 4px;
+}
+
+.admin {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.comment-content {
     font-size: 14px;
 }
 
@@ -123,6 +134,25 @@ body {
 .actions a:hover {
     background-color: #0056b3;
 }
+
+.comment-block {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 20px auto;
+    background: #fff;
+    border-radius: 4px;
+    width: 80%;
+}
+
+.comment-content {
+    font-size: 20px; /* 글자 크기 키움 */
+    text-align: center; /* 가운데 정렬 */
+    display: block; /* span 요소를 블록 요소로 변경하여 text-align 적용 */
+    margin: 10px 0; /* 위아래 여백 추가 */
+}
+
+
+
 
 
 
