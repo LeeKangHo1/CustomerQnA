@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -27,7 +29,7 @@ public class QNA_Controller {
 	
 	@GetMapping("/qna")
 	public String searchQnaList(
-			@PageableDefault(size = 20, page = 0, sort = "article_id", direction = Sort.Direction.DESC) Pageable pageable,
+			@PageableDefault(size = 10, page = 0, sort = "article_id", direction = Sort.Direction.DESC) Pageable pageable,
 			@RequestParam(required = false, defaultValue = "article_id") String sortBy,
 			@RequestParam(defaultValue = "searchTitle") String searchType,
 			@RequestParam(defaultValue = "") String keyword, Model model) {
@@ -44,30 +46,8 @@ public class QNA_Controller {
 		model.addAttribute("qnaList", searchResults);
 		model.addAttribute("currentPage", pageable.getPageNumber());
 		model.addAttribute("currentSort", sortBy);
-		return "qna2";
+		return "qna";
 	}
-	
-//	@PostMapping("/qna")
-//	public String searchQna(
-//			@PageableDefault(size = 20, page = 0, sort = "article_id", direction = Sort.Direction.DESC) Pageable pageable,
-//			@RequestParam(required = false, defaultValue = "article_id") String sortBy,
-//			@RequestParam(defaultValue = "searchTitle") String searchType,
-//			@RequestParam(defaultValue = "") String keyword, Model model) {
-//
-//		// 선택한 정렬 방식 적용
-//		Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
-//				Sort.by(Sort.Order.desc(sortBy)));
-//
-//		List<QNA> searchResults = service.searchByTitleOrContent(searchType, keyword, sortedPageable);
-//
-//		model.addAttribute("searchType", searchType);
-//		model.addAttribute("keyword", keyword);
-//
-//		model.addAttribute("qnaList", searchResults);
-//		model.addAttribute("currentPage", pageable.getPageNumber());
-//		model.addAttribute("currentSort", sortBy);
-//		return "qna2";
-//	}
 	
 	@GetMapping("/qna/{article_id}")
 	public String readArticle(@PathVariable Integer article_id, Model model) {
@@ -128,9 +108,10 @@ public class QNA_Controller {
 	}
 	
 	@PostMapping("/qna/{article_id}/delete")
-	public String deleteQna(@PathVariable Integer article_id, Model model, @RequestParam String password) {
+	public String deleteQna(@PathVariable Integer article_id
+			, Model model, @RequestParam String password) {
 		QNA qna = service.findById(article_id);
-       	String originalPassword = qna.getPassword();   
+       	String originalPassword = qna.getPassword();  
        	
         if (originalPassword.equals(password)) {
         	int result = service.deleteQna(article_id);
@@ -185,5 +166,40 @@ public class QNA_Controller {
 		
 		return "article";
 	}
+	
+	// 관리자 로그인
+	@GetMapping("/qna/login")
+	public String adminLogin() {
+		return "loginForm";
+	}
+	
+	@PostMapping("/qna/login")
+	public String submitLogin(@RequestParam String id, @RequestParam String password
+			, HttpSession session, Model model) {
+		if (id.equals("qwer") & password.equals("qwer")) {
+			session.setAttribute("id", id);
+		} else {
+			model.addAttribute("error", "아이디/패스워드가 틀렸습니다.");
+			return "loginForm";
+		}
+		return "redirect:/qna";
+	}
+	
+	@GetMapping("/qna/logout")
+	public String admingLogout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/qna";
+	}
+	
+	// TODO 댓글 달기
+	@PostMapping("/qna/{article_id}/comment")
+	public String addComment(@PathVariable("article_id") Integer articleId,
+	                         @RequestParam String content,
+	                         RedirectAttributes redirectAttributes) {
+	    redirectAttributes.addFlashAttribute("admin", "관리자");
+	    redirectAttributes.addFlashAttribute("content", content);
+	    return "redirect:/qna/" + articleId;
+	}
+
 	
 }

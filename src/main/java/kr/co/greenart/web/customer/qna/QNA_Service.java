@@ -23,16 +23,18 @@ public interface QNA_Service {
 	// 3 게시글 삭제
 	int deleteQna(Integer article_id);
 	
-	// 3. 게시글 수정
+	// 3. 게시글 수정 -> 수정이력 남기기?
 	int updateArticle(QNA qna);
 
 	// 4. 게시글 검색
 	List<QNA> searchByTitleOrContent(String keyword, String searchType, Pageable sortedPageable);
 	
-	// 5. 관리자 기능(비밀 게시글 조회, 게시글 강제 삭제)
+	// 5. 관리자 기능 -> 로그인하고 session에 담는것까지 완료(비밀 게시글 조회, 게시글 강제 삭제)
+	
+	// 6. 공유 게시글 공유 링크 생성 -> 완료
 	
 	// 7. 관리자 댓글 기능(댓글 작성, 댓글 수정/삭제, 답변이 완료되지 않은 게시글 목록 조회)
-	
+	// table 하나 더 파야하나?
 	
 /*
 1. 게시글 작성

@@ -99,7 +99,8 @@ public interface QNA_mysql_Mapper {
     		, Pageable sortedPageable);
 
     class QnaSearchProvider {
-        public String searchByTitleOrContent(@Param("searchType") String searchType, @Param("keyword") String keyword
+        public String searchByTitleOrContent(@Param("searchType") String searchType
+        		, @Param("keyword") String keyword
         		, Pageable sortedPageable) {
             
             return new SQL() {{

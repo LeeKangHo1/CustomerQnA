@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,6 +27,16 @@
             <p class="created-at">작성일 : ${qna.created_at}</p>
         </footer>
     </article>
+    <c:if test="${ not empty id }">
+        <div class="comments-section">
+            <span class="admin">${ admin }</span><span class="comment-content">${ content }</span>
+            <form method="post" action="/qna/${qna.article_id}/comment" class="comment-form">
+                <label>내용</label>
+                <input type="text" name="content" class="input-content" required>
+                <button type="submit">댓글 작성</button>
+            </form>
+        </div>
+    </c:if>
     <div class="link-buttons">
         <button id="btn-link">게시글 링크 보기</button>
         <dialog id="link">
@@ -42,4 +53,6 @@
     <script src="/js/articleJs.js"></script>
 </body>
 </html>
+
+
 

@@ -12,7 +12,6 @@
     <h1 class="title">Q & A 게시판</h1>
     <div class="search-form">
         <form method="get" action="/qna/search">
-            <label for="searchType">검색 옵션</label>
             <select name="searchType" id="searchType">
                 <option value="searchTitle">제목</option>
                 <option value="searchContent">내용</option>
@@ -33,19 +32,36 @@
         <c:if test="${currentPage > 0}">
             <c:url var="previousPage" value="/qna?page=${currentPage - 1}"></c:url>
         </c:if>
-        <c:if test="${qnaList.size() == 20}">
+        <c:if test="${qnaList.size() == 10}">
             <c:url var="nextPage" value="/qna?page=${currentPage + 1}"></c:url>
         </c:if>
         <a href="${ previousPage }">Previous</a>
         <label>| ${currentPage} |</label>
         <a href="${ nextPage }">Next</a>
     </nav>
-    
     <ul class="qna-list">
         <c:forEach var="qna" items="${qnaList}">
-            <li><a href="<c:url value='/qna/${qna.article_id}' />">${qna.title}</a></li>
+            <li>제목: <a href="<c:url value='/qna/${qna.article_id}' />">${qna.title}</a></li>
         </c:forEach>
     </ul>
-    
+    <div class="admin">
+        <c:if test="${ empty id }">
+            <button id="login">관리자 로그인</button>
+        </c:if>
+        <c:if test="${ not empty id }">
+            <button onclick="logoutWithAlert()">로그아웃</button>
+        </c:if>
+    </div>
 </body>
+	<script>
+	let loginBtn = document.getElementById('login');
+	loginBtn.addEventListener("click", (e) => {
+		window.location.href='/qna/login'
+	}); 
+	
+	function logoutWithAlert() {
+        window.location.href = "/qna/logout";
+        alert("로그아웃되었습니다.");
+    }
+	</script>
 </html>
