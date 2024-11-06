@@ -30,6 +30,7 @@
     <c:if test="${ not empty qnaComment }">
     <div class="comment-block">
         <span class="comment-content">${qnaComment.comment}</span>
+        <span class="comment-date">작성일 : ${qnaComment.created_at}</span>
     </div>
     </c:if>
 	<c:if test="${ not empty id }">

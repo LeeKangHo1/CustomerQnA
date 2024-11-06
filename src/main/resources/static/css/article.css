@@ -151,9 +151,10 @@ body {
     margin: 10px 0; /* 위아래 여백 추가 */
 }
 
-
-
-
-
-
-
+/* comment-date 클래스를 span 태그에 적용 */
+.comment-date {
+    display: block; /* span 요소를 블록 요소로 변경 */
+    text-align: right; /* 오른쪽 정렬 */
+    font-size: 12px;
+    color: #999;
+}

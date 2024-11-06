@@ -43,20 +43,6 @@ body {
     margin-bottom: 20px;
 }
 
-.qna-list {
-    list-style: none;
-    padding: 0;
-    width: 60%;
-    margin: auto;
-}
-
-.qna-list li {
-    padding: 10px;
-    background: #fff;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-}
-
 .write-post {
     text-align: center;
     margin: 20px;
@@ -81,3 +67,67 @@ body {
     text-align: center;
 }
 
+/* 테이블 스타일 */
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    border: 1px solid #ddd; /* 테두리 추가 */
+}
+
+th, td {
+    padding: 10px;
+    text-align: center; /* 모든 셀을 중앙 정렬 */
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd; /* 컬럼 경계선 추가 */
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+td a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+td a:hover {
+    text-decoration: underline;
+}
+
+/* top-line 클래스에 푸른 계열 배경색 및 글자색 변경 */
+.top-line {
+    background-color: cornflowerblue;
+    color: #ffffff;
+    height: 20px; /* 세로 폭 줄이기 */
+}
+
+/* 제목 컬럼의 중앙 정렬 해제 */
+.content-title {
+    text-align: left;
+}
+
+/* 컬럼 폭 조정 */
+th:nth-child(1), td:nth-child(1) { /* 글 번호 컬럼 */
+    width: 10%;
+}
+
+th:nth-child(2), td:nth-child(2) { /* 작성자 컬럼 */
+    width: 15%;
+}
+
+th:nth-child(3), td:nth-child(3) { /* 제목 컬럼 */
+    width: 40%;
+}
+
+th:nth-child(4), td:nth-child(4) { /* 조회수 컬럼 */
+    width: 15%;
+}
+
+th:nth-child(5), td:nth-child(5) { /* 등록일자 컬럼 */
+    width: 20%;
+}

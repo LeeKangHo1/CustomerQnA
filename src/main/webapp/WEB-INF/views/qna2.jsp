@@ -39,24 +39,11 @@
         <label>| ${currentPage} |</label>
         <a href="${ nextPage }">Next</a>
     </nav>
-    <table>
-			<tr>
-				<th class="top-line">글 번호</th>
-				<th class="top-line">작성자</th>
-				<th class="top-line">제목</th>
-				<th class="top-line">조회수</th>
-				<th class="top-line">등록일자</th>
-			</tr>
-			<c:forEach var="qna" items="${qnaList}">
-				<tr>
-					<td>${qna.article_id}</td>
-					<td>${qna.username}</td>
-					<td class="content-title"><a href="<c:url value='/qna/${qna.article_id}' />">${qna.title}</a></td>
-					<td>${qna.views}</td>
-					<td>${qna.created_at}</td>
-				</tr>
-			</c:forEach>
-		</table>
+    <ul class="qna-list">
+        <c:forEach var="qna" items="${qnaList}">
+            <li>제목: <a href="<c:url value='/qna/${qna.article_id}' />">${qna.title}</a></li>
+        </c:forEach>
+    </ul>
     <div class="admin">
         <c:if test="${ empty id }">
             <button id="login">관리자 로그인</button>

@@ -1,0 +1,83 @@
+@charset "UTF-8";
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+.title {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.search-form {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+.search-form form {
+    display: flex;
+    align-items: center;
+}
+
+.search-form select, 
+.search-form input[type="text"], 
+.search-form input[type="submit"] {
+    font-size: 16px;
+    height: 35px;
+    line-height: 35px;
+    margin-right: 10px;
+    padding: 0 10px;
+}
+
+.search-form input[type="submit"] {
+    padding: 5px 10px;
+    height: 37px; 
+}
+
+.sort-options {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.qna-list {
+    list-style: none;
+    padding: 0;
+    width: 60%;
+    margin: auto;
+}
+
+.qna-list li {
+    padding: 10px;
+    background: #fff;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+}
+
+.write-post {
+    text-align: center;
+    margin: 20px;
+}
+
+.pagination {
+    text-align: center;
+    margin: 20px;
+}
+
+.pagination a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.pagination a:hover {
+    text-decoration: underline;
+}
+
+.admin {
+    text-align: center;
+}
+
