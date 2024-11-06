@@ -145,7 +145,7 @@ body {
 }
 
 .comment-content {
-    font-size: 20px; /* 글자 크기 키움 */
+    font-size: 16px; /* 글자 크기 키움 */
     text-align: center; /* 가운데 정렬 */
     display: block; /* span 요소를 블록 요소로 변경하여 text-align 적용 */
     margin: 10px 0; /* 위아래 여백 추가 */
