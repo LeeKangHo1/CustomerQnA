@@ -204,7 +204,7 @@ public class QNA_Controller {
 		return "redirect:/qna";
 	}
 	
-	// TODO 댓글 달기
+	// 댓글 달기
 	@PostMapping("/qna/{article_id}/comment")
 	public String addComment(@PathVariable("article_id") Integer articleId,
 	                         @RequestParam String comment) {

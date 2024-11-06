@@ -11,7 +11,7 @@
 <body>
     <h1 class="title">Q & A 게시판</h1>
     <div class="search-form">
-        <form method="get" action="/qna/search">
+        <form>
             <select name="searchType" id="searchType">
                 <option value="searchTitle">제목</option>
                 <option value="searchContent">내용</option>
