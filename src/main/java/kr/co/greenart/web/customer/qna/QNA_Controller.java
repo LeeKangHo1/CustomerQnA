@@ -40,7 +40,7 @@ public class QNA_Controller {
 		// 선택한 정렬 방식 적용
 		Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
 				Sort.by(Sort.Order.desc(sortBy)));
-
+		
 		List<QNA> searchResults = service.searchByTitleOrContent(searchType, keyword, sortedPageable);
 
 		model.addAttribute("searchType", searchType);

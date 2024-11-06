@@ -29,14 +29,26 @@
         <a href="/qna/form">게시글 작성</a>
     </div>
     <nav class="pagination">
+    
+    <c:if test="${ currentSort == 'article_id'}">
         <c:if test="${currentPage > 0}">
             <c:url var="previousPage" value="/qna?page=${currentPage - 1}"></c:url>
         </c:if>
         <c:if test="${qnaList.size() == 10}">
             <c:url var="nextPage" value="/qna?page=${currentPage + 1}"></c:url>
         </c:if>
+    </c:if>
+    
+    <c:if test="${ currentSort == 'views'}">
+  		<c:if test="${currentPage > 0}">
+            <c:url var="previousPage" value="/qna?page=${currentPage - 1}&sortBy=views"></c:url>
+        </c:if>
+        <c:if test="${qnaList.size() == 10}">
+            <c:url var="nextPage" value="/qna?page=${currentPage + 1}&sortBy=views"></c:url>
+        </c:if>
+    </c:if>
         <a href="${ previousPage }">Previous</a>
-        <label>| ${currentPage} |</label>
+        <label>| ${ currentPage } |</label>
         <a href="${ nextPage }">Next</a>
     </nav>
     <table>

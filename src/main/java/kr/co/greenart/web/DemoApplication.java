@@ -20,12 +20,12 @@ public class DemoApplication implements CommandLineRunner {
 	// 어플 실행하면 바로 실행
 	@Override
 	public void run(String... args) throws Exception {
-//		for (int i = 2; i < 7; i++) {
+//		for (int i = 1; i < 11; i++) {
 //			mapper.save(QNA.builder()
-//							.title("title" + i)
-//							.content("content" + i)
-//							.username("userane" + i)
-//							.password("password" + i)
+//							.title("고객문의 게시글 " + i)
+//							.content("게시글의 내용입니다." + i)
+//							.username("username" + i)
+//							.password("1234")
 //							.build());
 //		}
 	}
