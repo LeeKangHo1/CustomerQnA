@@ -30,3 +30,9 @@
 - #### 게시글 삭제
 
 	![게시글 삭제](https://github.com/user-attachments/assets/da4d9848-0fb1-486b-8289-9f1fca6f42bb)
+
+---
+## Authors
+- 이강호
+- 깃허브 닉네임: LeeKangHo1
+- [깃허브 프로필 링크](https://github.com/LeeKangHo1)
